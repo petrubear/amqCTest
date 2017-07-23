@@ -29,40 +29,40 @@ int main(int argc, char *argv[]) {
     CMS_MessageConsumer *consumer = NULL;
 
     if (cms_createConnectionFactory(&factory, brokerUri, NULL, NULL) != CMS_SUCCESS) {
-        printf("no se pudo crear factory\n");
+        printf("[ERROR] no se pudo crear factory\n");
         exit(1);
     }
 
     if (cms_createDefaultConnection(factory, &connection) != CMS_SUCCESS) {
-        printf("no se pudo crear la conexion\n");
+        printf("[ERROR] no se pudo crear la conexion\n");
         exit(1);
     }
 
     cms_destroyConnectionFactory(factory);
 
     if (cms_createDefaultSession(connection, &session) != CMS_SUCCESS) {
-        printf("no se pudo crear la sesion\n");
+        printf("[ERROR] no se pudo crear la sesion\n");
         exit(1);
     }
 
     if (cms_createDestination(session, CMS_QUEUE, queueName, &destination) != CMS_SUCCESS) {
-        printf("no se pudo crear el destino\n");
+        printf("[ERROR] no se pudo crear el destino\n");
         exit(1);
     }
 
     if (cms_createDefaultConsumer(session, destination, &consumer) != CMS_SUCCESS) {
-        printf("no se pudo crear el consumidor\n");
+        printf("[ERROR] no se pudo crear el consumidor\n");
         exit(1);
     }
 
     if (cms_startConnection(connection) != CMS_SUCCESS) {
-        printf("no se pudo iniciar la conexion\n");
+        printf("[ERROR] no se pudo iniciar la conexion\n");
         exit(1);
     }
 
     CMS_Message *message = NULL;
     if (cms_consumerReceive(consumer, &message) != CMS_SUCCESS) {
-        printf("error esperando por mensjes.");
+        printf("[ERROR] error esperando por mensjes.");
         exit(1);
     }
 
@@ -77,13 +77,13 @@ int main(int argc, char *argv[]) {
         int numProperties = 0;
 
         if (cms_getMessageText(message, text, 256) == CMS_ERROR) {
-            printf("error leyendo texto del mensaje.\n");
+            printf("[ERROR] error leyendo texto del mensaje.\n");
             exit(1);
         }
 
-        printf("Got message: %s.\n", text);
+        printf("[INFO] Got message: %s.\n", text);
     } else {
-        printf("se recibio mensaje de tipo desconocido.\n");
+        printf("[INFO] se recibió mensaje de tipo desconocido.\n");
     }
 
     cms_destroyMessage(message);

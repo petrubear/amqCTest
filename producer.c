@@ -28,43 +28,43 @@ int main(int argc, char *argv[]) {
     CMS_Message *txtMessage = NULL;
 
     if (cms_createConnectionFactory(&factory, brokerUri, NULL, NULL) != CMS_SUCCESS) {
-        printf("no se pudo crear el factory\n");
+        printf("[ERROR] no se pudo crear el factory\n");
         exit(1);
     }
 
     if (cms_createDefaultConnection(factory, &connection) != CMS_SUCCESS) {
-        printf("no se pudo crear la conexion\n");
+        printf("[ERROR] no se pudo crear la conexion\n");
         exit(1);
     }
 
     cms_destroyConnectionFactory(factory);
 
     if (cms_createDefaultSession(connection, &session) != CMS_SUCCESS) {
-        printf("no se pudo crear la sesion\n");
+        printf("[ERROR] no se pudo crear la sesion\n");
         exit(1);
     }
 
     if (cms_createDestination(session, CMS_QUEUE, queueName, &destination) != CMS_SUCCESS) {
-        printf("no se pudo crear el destino\n");
+        printf("[ERROR] no se pudo crear el destino\n");
         exit(1);
     }
 
     if (cms_createProducer(session, destination, &producer) != CMS_SUCCESS) {
-        printf("no se pudo crear el producer\n");
+        printf("[ERROR] no se pudo crear el producer\n");
         exit(1);
     }
 
     CMS_Message *message = NULL;
-    cms_createTextMessage(session, &message, "Hello world! from activemqcpp");
+    cms_createTextMessage(session, &message, "[INFO] Hello world! from activemqcpp");
     cms_setCMSMessageType(message, "text/plain");
 
     if (cms_producerSendWithDefaults(producer, message) != CMS_SUCCESS) {
-        printf("no se pudo enviar el mensaje\n");
+        printf("[ERROR] no se pudo enviar el mensaje\n");
         cms_destroyMessage(message);
         exit(1);
     }
 
-    printf("Sending Message: %a\n", message);
+    printf("[INFO] Sending Message: %a\n", message);
 
     cms_destroyMessage(message);
 
